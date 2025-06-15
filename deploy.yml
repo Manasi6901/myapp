@@ -1,0 +1,14 @@
+- name: Deploy App to Docker
+  hosts: target
+  become: true
+  tasks:
+    - name: Stop old container
+      shell: docker stop myapp && docker rm myapp
+      ignore_errors: yes
+
+    - name: Pull new Docker image
+      shell: docker pull localhost:5000/myapp:latest
+
+    - name: Run Docker container
+      shell: docker run -d --name myapp -p 8080:8080 localhost:5000/myapp:latest
+
